@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../../../../../../../../ProductAPIProject/ShopEase.API/ShopEase.API/ShopEase.API.csproj" />
+  <Project Path="../../../../../../../../ProductAPIProject/ShopEase.API/ShopEase.Application/ShopEase.Application.csproj" />
+  <Project Path="../../../../../../../../ProductAPIProject/ShopEase.API/ShopEase.Domain/ShopEase.Domain.csproj" />
+  <Project Path="../../../../../../../../ProductAPIProject/ShopEase.API/ShopEase.Infrastructure/ShopEase.Infrastructure.csproj" />
+</Solution>
