@@ -1,7 +1,11 @@
 import axios from 'axios'
 
+// Use environment variable if available, otherwise use Azure URL
+const BASE_URL = import.meta.env.VITE_API_URL 
+  ?? 'https://shopease-api-athar.azurewebsites.net/api'
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://localhost:7158/api',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
