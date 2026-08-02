@@ -1,0 +1,19 @@
+# Visual Studio cache
+.vs/
+**/.vs/
+*.user
+*.userosscache
+*.suo
+
+# Build outputs
+**/bin/
+**/obj/
+
+# React
+node_modules/
+dist/
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
