@@ -28,6 +28,23 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy API to Azure Web App
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore packages
+        run: dotnet restore "ShopEase.API/ShopEase.API/ShopEase.API/ShopEase.API.csproj"
+
+      - name: Build API
+        run: dotnet build "ShopEase.API/ShopEase.API/ShopEase.API/ShopEase.API.csproj" --configuration Release --no-restore
+
+      - name: Publish API
+        run: dotnet publish "ShopEase.API/ShopEase.API/ShopEase.API/ShopEase.API.csproj" -c Release -o ./publish --no-restore
+
       - name: Azure Login
         uses: azure/login@v2
         with:
@@ -37,6 +54,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: shopease-api-athar
-          package: ./publish
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish
