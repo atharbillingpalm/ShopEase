@@ -37,11 +37,13 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // ── Middleware ────────────────────────────────
-if (app.Environment.IsDevelopment())
+// Enable Swagger in all environments for portfolio demo
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopEase API v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseCors("ReactApp");   // ← must be before MapControllers
 app.UseHttpsRedirection();
