@@ -1,10 +1,44 @@
+
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ShopEase.API.Data;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ── Services ──────────────────────────────────
 builder.Services.AddControllers();
+// ── JWT Authentication ──────────────────────
+var jwtKey = builder.Configuration["JwtSettings:SecretKey"]!;
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            Microsoft.AspNetCore.Authentication.JwtBearer
+            .JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme =
+            Microsoft.AspNetCore.Authentication.JwtBearer
+            .JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration[
+                    "JwtSettings:Issuer"],
+                ValidAudience = builder.Configuration[
+                    "JwtSettings:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtKey)),
+            };
+    });
+
+builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -45,8 +79,9 @@ app.UseSwaggerUI(c =>
 });
 
 app.UseCors("ReactApp");   // ← must be before MapControllers
-app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpsRedirection();
 app.MapControllers();
 
 // ── Auto-migrate on startup ───────────────────

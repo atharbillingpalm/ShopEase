@@ -1,6 +1,7 @@
+import { useAuthStore } from '../../features/auth/authStore'
 import { useCartStore } from '../../features/cart/cartStore'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ShoppingCart, User, Search, Menu, X, Bot } from 'lucide-react'
 
 const categories = [
@@ -14,6 +15,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
   const totalItems = useCartStore(s => s.totalItems())
+  const { user, isLoggedIn, logout } = useAuthStore()
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -70,11 +72,57 @@ export default function Navbar() {
             <Bot size={18} className="text-[#f0c040] mx-auto" />
             <span className="text-white text-xs block">AI</span>
           </Link>
-          <Link to="/account" className="text-center cursor-pointer 
-                                          hover:text-[#f0c040]">
-            <User size={18} className="text-gray-300 mx-auto" />
-            <span className="text-gray-300 text-xs block">Account</span>
-          </Link>
+          {isLoggedIn ? (
+  <div className="relative group text-center cursor-pointer">
+    <div className="w-8 h-8 bg-[#f0c040] rounded-full 
+                    flex items-center justify-center 
+                    text-[#1a1a2e] font-bold text-sm mx-auto">
+      {user?.fullName?.charAt(0).toUpperCase()}
+    </div>
+    <span className="text-gray-300 text-xs block mt-0.5">
+      {user?.fullName?.split(' ')[0]}
+    </span>
+    {/* Dropdown */}
+    <div className="absolute right-0 top-12 bg-white 
+                    border border-gray-200 rounded-xl 
+                    shadow-lg w-48 hidden 
+                    group-hover:block z-50 text-left">
+      <div className="px-4 py-3 border-b border-gray-100">
+        <p className="text-sm font-bold text-gray-800 truncate">
+          {user?.fullName}
+        </p>
+        <p className="text-xs text-gray-400 truncate">
+          {user?.email}
+        </p>
+      </div>
+      <Link to="/orders"
+        className="block px-4 py-2.5 text-sm 
+                   text-gray-700 hover:bg-gray-50">
+        My Orders
+      </Link>
+      <Link to="/ai"
+        className="block px-4 py-2.5 text-sm 
+                   text-gray-700 hover:bg-gray-50">
+        AI Assistant
+      </Link>
+      <button
+        onClick={() => { logout(); navigate('/') }}
+        className="w-full text-left px-4 py-2.5 
+                   text-sm text-red-500 hover:bg-red-50 
+                   rounded-b-xl">
+        Sign Out
+      </button>
+    </div>
+  </div>
+) : (
+  <Link to="/login"
+    className="text-center cursor-pointer hover:text-[#f0c040]">
+    <User size={18} className="text-gray-300 mx-auto" />
+    <span className="text-gray-300 text-xs block">
+      Sign In
+    </span>
+  </Link>
+)}
           <Link to="/orders" className="text-center cursor-pointer 
                                          hover:text-[#f0c040]">
             <span className="text-gray-300 text-xs block">Returns</span>

@@ -11,6 +11,8 @@ import AdminLayout from './pages/Admin/AdminLayout'
 import AdminDashboard from './pages/Admin/AdminDashboard'
 import CategoryManagement from './pages/Admin/CategoryManagement'
 import AddProductPage from './pages/Admin/AddProductPage'
+import LoginPage    from './pages/Auth/LoginPage'
+import RegisterPage from './pages/Auth/RegisterPage'
 
 function UserLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -42,6 +44,8 @@ function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/orders" element={<OrdersPage />} />
                 <Route path="/ai" element={<AIAssistantPage />} />
+                <Route path="/login"    element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
               </Routes>
             </div>
           } path="/*" />

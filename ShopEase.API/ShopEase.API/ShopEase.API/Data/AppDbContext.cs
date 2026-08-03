@@ -12,10 +12,22 @@ namespace ShopEase.API.Data
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
             base.OnModelCreating(mb);
+
+            mb.Entity<User>(e =>
+            {
+                e.HasKey(u => u.Id);
+                e.Property(u => u.Email)
+                 .IsRequired().HasMaxLength(200);
+                e.HasIndex(u => u.Email).IsUnique();
+                e.Property(u => u.FullName)
+                 .IsRequired().HasMaxLength(100);
+                e.Property(u => u.Role).HasMaxLength(20);
+            });
 
             // Category config
             mb.Entity<Category>(e =>
