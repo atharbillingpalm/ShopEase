@@ -1,3 +1,6 @@
+import AdminOrders  from "./pages/Admin/AdminOrders";
+import AdminUsers   from "./pages/Admin/AdminUsers";
+import ComingSoon   from "./pages/Admin/ComingSoon";
 import AdminRoute from "./shared/components/AdminRoute";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -51,15 +54,17 @@ function App() {
             </div>
           } path="/*" />
 
-          {/* Admin pages — with Admin Sidebar, NO Navbar */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="categories" element={<CategoryManagement />} />
-            <Route path="products"   element={<AddProductPage />}     />
-          </Route>
-
-          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
-
+          {/* Admin pages — protected, with sidebar, NO Navbar */}
+<Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+  <Route index           element={<AdminDashboard />} />
+  <Route path="categories" element={<CategoryManagement />} />
+  <Route path="products"   element={<AddProductPage />} />
+  <Route path="orders"     element={<AdminOrders />} />
+  <Route path="users"      element={<AdminUsers />} />
+  <Route path="ai"         element={<ComingSoon title="AI Analytics" />} />
+  <Route path="reports"    element={<ComingSoon title="Reports" />} />
+  <Route path="settings"   element={<ComingSoon title="Settings" />} />
+</Route>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
