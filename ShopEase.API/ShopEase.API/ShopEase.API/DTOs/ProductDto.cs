@@ -187,6 +187,11 @@ namespace ShopEase.API.DTOs
         public List<ProductDto> Products { get; set; } = new();
     }
 
+    public class UpdateOrderStatusDto
+    {
+        public string Status { get; set; } = string.Empty;
+    }
+
     public static class ProductExtensions
     {
         public static ProductDto MapToDto(this Product p) => new()

@@ -100,6 +100,15 @@ export default function Navbar() {
                    text-gray-700 hover:bg-gray-50">
         My Orders
       </Link>
+      {/* Add this after the My Orders link */}
+{user?.role === "Admin" && (
+  <Link
+    to="/admin"
+    className="block px-4 py-2 text-sm text-purple-700 font-semibold hover:bg-purple-50"
+  >
+    🛠️ Admin Panel
+  </Link>
+)}
       <Link to="/ai"
         className="block px-4 py-2.5 text-sm 
                    text-gray-700 hover:bg-gray-50">

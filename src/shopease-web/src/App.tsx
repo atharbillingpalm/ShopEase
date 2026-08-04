@@ -1,3 +1,4 @@
+import AdminRoute from "./shared/components/AdminRoute";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import Navbar from './shared/components/Navbar'
@@ -56,6 +57,8 @@ function App() {
             <Route path="categories" element={<CategoryManagement />} />
             <Route path="products"   element={<AddProductPage />}     />
           </Route>
+
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>}/>
 
         </Routes>
       </BrowserRouter>
