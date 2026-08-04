@@ -1,4 +1,6 @@
-﻿namespace ShopEase.API.DTOs
+﻿using ShopEase.API.Models;
+
+namespace ShopEase.API.DTOs
 {
     public class ProductDto
     {
@@ -165,5 +167,64 @@
         public string Role { get; set; } = string.Empty;
         public int UserId { get; set; }
         public DateTime ExpiresAt { get; set; }
+    }
+
+    public class ChatMessageDto
+    {
+        public string Role { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+    }
+
+    public class ChatRequestDto
+    {
+        public string Message { get; set; } = string.Empty;
+        public List<ChatMessageDto> History { get; set; } = new();
+    }
+
+    public class ChatResponseDto
+    {
+        public string Text { get; set; } = string.Empty;
+        public List<ProductDto> Products { get; set; } = new();
+    }
+
+    public static class ProductExtensions
+    {
+        public static ProductDto MapToDto(this Product p) => new()
+        {
+            Id = p.Id,
+            Name = p.Name,
+            Description = p.Description,
+            ShortDescription = p.ShortDescription,
+            SeoTags = p.SeoTags,
+            Price = p.Price,
+            Mrp = p.Mrp,
+            DiscountPercent = p.Mrp > 0
+                        ? (int)(((p.Mrp - p.Price) / p.Mrp) * 100)
+                        : 0,
+            Stock = p.Stock,
+            Sku = p.Sku,
+            Brand = p.Brand,
+            Colours = p.Colours,
+            Dimensions = p.Dimensions,
+            Material = p.Material,
+            FreeDelivery = p.FreeDelivery,
+            ReturnPolicy = p.ReturnPolicy,
+            Warranty = p.Warranty,
+            ImageUrls = string.IsNullOrEmpty(p.ImageUrls)
+                        ? new List<string>()
+                        : p.ImageUrls.Split(',')
+                                     .Select(x => x.Trim())
+                                     .ToList(),
+            Status = p.Status,
+            IsFeatured = p.IsFeatured,
+            ShowInFlashSale = p.ShowInFlashSale,
+            IncludeInAiSearch = p.IncludeInAiSearch,
+            ShowInDealsStrip = p.ShowInDealsStrip,
+            Rating = p.Rating,
+            ReviewCount = p.ReviewCount,
+            CategoryId = p.CategoryId,
+            CategoryName = p.Category?.Name ?? "",
+            CreatedAt = p.CreatedAt,
+        };
     }
 }

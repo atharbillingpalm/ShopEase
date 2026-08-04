@@ -87,8 +87,16 @@ app.MapControllers();
 // ── Auto-migrate on startup ───────────────────
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration warning: {ex.Message}");
+        // App continues even if migration fails
+    }
 }
 
 app.Run();
